@@ -2,34 +2,26 @@ import {
   UidVO,
   NameVO,
   EmailVO,
-  RoleVO,
   PhoneNumberVO,
+  StatusVO,
 } from '@domain/value-objects';
 import { UserEntity } from '@domain/entities/user.entity';
-import { UserDocument } from '@infrastructure/databases/mongoose/schemas/user.schema';
+import { UserDocument } from '@infrastructure/databases/schemas/user.schema';
 
 export class UserMapper {
-  static toEntity(user: UserDocument): UserEntity {
-    if (!user) throw new Error('User document is null');
-    return new UserEntity({
-      uid: UidVO.fromValue(user.uid),
-      name: NameVO.fromValue(user.name),
-      email: EmailVO.fromValue(user.email),
-      phoneNumber: PhoneNumberVO.fromValue(user.phoneNumber),
-      role: RoleVO.fromValue(user.role),
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    });
+  static fromPersistence(user: UserDocument): UserEntity {
+    const uid = UidVO.fromValue(user.uid);
+    const name = NameVO.fromValue(user.name);
+    const email = EmailVO.fromValue(user.email);
+    const status = StatusVO.fromValue(user.status);
+    const phoneNumber = PhoneNumberVO.fromValue(user.phoneNumber);
+    const props = { uid, name, email, status, phoneNumber };
+    const { createdAt, updatedAt } = user;
+
+    return new UserEntity({ ...props, createdAt, updatedAt });
   }
 
   static toPersistence(user: UserEntity) {
-    return {
-      uid: user.uid,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    };
+    return user.toObject();
   }
 }

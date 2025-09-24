@@ -3,20 +3,21 @@ import {
   UidVO,
   NameVO,
   EmailVO,
-  RoleVO,
   PhoneNumberVO,
+  StatusVO,
+  StatusType,
 } from '@domain/value-objects';
 
 export class UserFactory {
-  static signup(props: {
-    uid: UidVO;
+  static create(props: {
     name: NameVO;
     phoneNumber: PhoneNumberVO;
     email: EmailVO;
-    role: RoleVO;
+    status: StatusVO
   }): UserEntity {
     const userProps: UserEntityProps = {
       ...props,
+      uid: UidVO.create(),
       createdAt: new Date(),
       updatedAt: new Date(),
     };

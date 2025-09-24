@@ -1,16 +1,46 @@
-// import { Controller, Body, Post } from "@nestjs/common";
-// import { UserService } from "@application/services/user.service";
-// import { UserEntity } from "@domain/entities/user.entity";
-// import type { CreateUserRequestDTO } from "@presentation/dtos/request/user/create.dto";
-// import { UserResponseMapper } from "@presentation/mappers/user-response.mapper";
+import { Controller, Body, Post, Get, Param, Query, Put } from '@nestjs/common';
+import { UserService } from '@application/services/user.service';
+import { UserEntity } from '@domain/entities/user.entity';
+import { UserResponseMapper } from '@presentation/mappers/user-response.mapper';
+import {
+  CreateUserRequestSchema,
+  type CreateUserRequestDTO,
+} from '@presentation/dtos/request/create-user.dto';
+import {
+  UidParamRequestSchema,
+  type UidParamRequestDTO,
+} from '@presentation/dtos/request/uid-param.dto';
+import {
+  type UpdateUserStatusRequestDTO,
+  UpdateUserStatusRequestSchema,
+} from '@presentation/dtos/request/update-user-status.dto';
 
-// @Controller('users')
-// export class UserController{
-//   constructor(private readonly userService:UserService){}
+@Controller('users')
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
-//   @Post('create')
-//   async create(@Body() dto:CreateUserRequestDTO){
-//     const create = await this.userService.create(dto)
-//     return UserResponseMapper.toCreateUser(create)
-//   }
-// }
+  @Post('create')
+  async create(@Body() body: CreateUserRequestDTO) {
+    const parsed = CreateUserRequestSchema.parse(body);
+    const user = await this.userService.create(parsed);
+    return UserResponseMapper.toCreateUser(user);
+  }
+
+  @Get(':uid')
+  async findUserByUid(@Param() param: UidParamRequestDTO) {
+    const { uid } = UidParamRequestSchema.parse(param);
+    const user = await this.userService.findUserByUid(uid);
+    return UserResponseMapper.toGetByUid(user);
+  }
+
+  @Put(':uid/status')
+  async updateStatusUser(
+    @Param() param: UidParamRequestDTO,
+    @Body() body: UpdateUserStatusRequestDTO,
+  ) {
+    const { uid } = UidParamRequestSchema.parse(param);
+    const { status } = UpdateUserStatusRequestSchema.parse(body);
+    const doc = await this.userService.updateStatus({ uid, status });
+    return UserResponseMapper.toGetByUid(doc);
+  }
+}

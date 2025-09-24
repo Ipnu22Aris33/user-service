@@ -2,8 +2,8 @@ import {
   UidVO,
   EmailVO,
   NameVO,
-  RoleVO,
   PhoneNumberVO,
+  StatusVO,
 } from '@domain/value-objects';
 
 export interface UserEntityProps {
@@ -11,26 +11,30 @@ export interface UserEntityProps {
   name: NameVO;
   phoneNumber: PhoneNumberVO;
   email: EmailVO;
-  role: RoleVO;
+  status: StatusVO;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt?: Date | null;
 }
 
 export class UserEntity {
+  // immutable
   private readonly _uid: UidVO;
+  private readonly _createdAt: Date;
+
+  // mutable
   private _name: NameVO;
   private _email: EmailVO;
   private _phoneNumber: PhoneNumberVO;
-  private _role: RoleVO;
-  private readonly _createdAt: Date;
+  private _status: StatusVO;
   private _updatedAt: Date;
 
   constructor(props: UserEntityProps) {
     this._uid = props.uid;
     this._name = props.name;
     this._email = props.email;
-    this._phoneNumber = props.phoneNumber; 
-    this._role = props.role;
+    this._phoneNumber = props.phoneNumber;
+    this._status = props.status;
     this._createdAt = props.createdAt;
     this._updatedAt = props.updatedAt;
   }
@@ -39,49 +43,66 @@ export class UserEntity {
     this._updatedAt = new Date();
   }
 
-  //==> Name
   changeName(name: NameVO) {
-    if (this._name.equals(name)) return;
-    this._name = name;
-    this.touch();
+    if (!this._name.equals(name)) {
+      this._name = name;
+      this.touch();
+    }
   }
 
-  get name(): string {
-    return this._name.getValue();
-  }
-
-  //==> Email
   changeEmail(email: EmailVO) {
-    if (this._email.equals(email)) return;
-    this._email = email;
-    this.touch();
+    if (!this._email.equals(email)) {
+      this._email = email;
+      this.touch();
+    }
   }
 
-  get email(): string {
-    return this._email.getValue();
+  changeStatus(status: StatusVO): void {
+    if (!this._status.equals(status)) {
+      this._status = status;
+      this.touch();
+    }
   }
 
-  //==> Role
-  changeRole(role: RoleVO) {
-    if (this._role.equals(role)) return;
-    this._role = role;
-    this.touch();
-  }
-
-  get role(): string {
-    return this._role.getValue();
-  }
-
-  //==> UID & Timestamps
-  get uid(): string {
+  /** Getters */
+  getUid(): string {
     return this._uid.getValue();
   }
 
-  get createdAt(): Date {
+  getName(): string {
+    return this._name.getValue();
+  }
+
+  getEmail(): string {
+    return this._email.getValue();
+  }
+
+  getPhoneNumber(): string {
+    return this._phoneNumber.getValue();
+  }
+
+  getStatus(): string {
+    return this._status.getValue();
+  }
+
+  getCreatedAt(): Date {
     return this._createdAt;
   }
 
-  get updatedAt(): Date {
+  getUpdatedAt(): Date {
     return this._updatedAt;
+  }
+
+  // optional: untuk persistence / API
+  toObject() {
+    return {
+      uid: this.getUid(),
+      name: this.getName(),
+      email: this.getEmail(),
+      phoneNumber: this.getPhoneNumber(),
+      status: this.getStatus(),
+      createdAt: this.getCreatedAt(),
+      updatedAt: this.getUpdatedAt(),
+    };
   }
 }

@@ -2,23 +2,37 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument } from '@infrastructure/databases/mongoose/schemas/user.schema';
+import {
+  User,
+  UserDocument,
+} from '@infrastructure/databases/schemas/user.schema';
 import { IUserRepository } from '@application/ports/user.repository.port';
 import { UserEntity } from '@domain/entities/user.entity';
 import { UserMapper } from '@infrastructure/mappers/user.mapper';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
-  constructor(@InjectModel(User.name) private readonly userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+  ) {}
 
   async save(user: UserEntity): Promise<UserEntity> {
-    const userPersistence = UserMapper.toPersistence(user);
-    const userDocument = await this.userModel.create(userPersistence);
-    return UserMapper.toEntity(userDocument);
+    const persistence = UserMapper.toPersistence(user);
+    const filter = { uid: persistence.uid };
+    const options = { new: true, upsert: true };
+
+    const userDocument = await this.userModel.findOneAndUpdate(
+      filter,
+      persistence,
+      options,
+    );
+
+    return UserMapper.fromPersistence(userDocument!);
   }
 
-  async findByEmail(email: string): Promise<UserEntity | null> {
-    const userDocument = await this.userModel.findOne({ email }).exec();
-    return userDocument ? UserMapper.toEntity(userDocument) : null;
+
+  async findByUid(uid: string): Promise<UserEntity | null> {
+    const doc = await this.userModel.findOne({ uid }).exec();
+    return doc ? UserMapper.fromPersistence(doc) : null;
   }
 }

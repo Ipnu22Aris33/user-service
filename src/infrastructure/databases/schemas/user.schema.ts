@@ -1,3 +1,4 @@
+import { StatusType } from '@domain/value-objects';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -12,11 +13,11 @@ export class User extends Document {
   @Prop({ unique: true, required: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({ type: String })
   phoneNumber: string;
 
-  @Prop({ default: 'user', enum: ['user', 'admin'] })
-  role: string;
+  @Prop({ default: StatusType.PENDING })
+  status: StatusType;
 
   @Prop({ default: Date.now })
   createdAt: Date;
