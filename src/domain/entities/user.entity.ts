@@ -4,6 +4,7 @@ import {
   NameVO,
   PhoneNumberVO,
   StatusVO,
+  StatusType,
 } from '@domain/value-objects';
 
 export interface UserEntityProps {
@@ -18,79 +19,60 @@ export interface UserEntityProps {
 }
 
 export class UserEntity {
-  // immutable
-  private readonly _uid: UidVO;
-  private readonly _createdAt: Date;
-
-  // mutable
-  private _name: NameVO;
-  private _email: EmailVO;
-  private _phoneNumber: PhoneNumberVO;
-  private _status: StatusVO;
-  private _updatedAt: Date;
-
-  constructor(props: UserEntityProps) {
-    this._uid = props.uid;
-    this._name = props.name;
-    this._email = props.email;
-    this._phoneNumber = props.phoneNumber;
-    this._status = props.status;
-    this._createdAt = props.createdAt;
-    this._updatedAt = props.updatedAt;
-  }
+  constructor(private readonly props: UserEntityProps) {}
 
   private touch() {
-    this._updatedAt = new Date();
+    this.props.updatedAt = new Date();
   }
 
   changeName(name: NameVO) {
-    if (!this._name.equals(name)) {
-      this._name = name;
+    if (!this.props.name.equals(name)) {
+      this.props.name = name;
       this.touch();
     }
   }
 
   changeEmail(email: EmailVO) {
-    if (!this._email.equals(email)) {
-      this._email = email;
+    if (!this.props.email.equals(email)) {
+      this.props.email = email;
       this.touch();
     }
   }
 
   changeStatus(status: StatusVO): void {
-    if (!this._status.equals(status)) {
-      this._status = status;
+    if (!this.props.status.equals(status)) {
+      this.props.status = status
       this.touch();
     }
   }
 
   /** Getters */
   getUid(): string {
-    return this._uid.getValue();
+    return this.props.uid.getValue();
   }
 
   getName(): string {
-    return this._name.getValue();
+    return this.props.name.getValue();
   }
 
   getEmail(): string {
-    return this._email.getValue();
+    return this.props.email.getValue();
   }
 
   getPhoneNumber(): string {
-    return this._phoneNumber.getValue();
+    return this.props.phoneNumber.getValue();
   }
 
   getStatus(): string {
-    return this._status.getValue();
+    return this.props.status.getValue();
   }
 
   getCreatedAt(): Date {
-    return this._createdAt;
+    return this.props.createdAt;
   }
 
   getUpdatedAt(): Date {
-    return this._updatedAt;
+    return this.props.updatedAt;
   }
 
   // optional: untuk persistence / API

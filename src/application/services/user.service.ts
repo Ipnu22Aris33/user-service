@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserEntity } from '@domain/entities/user.entity';
 
-import { CreateUserUseCase } from '@application/usecases/create-user.usecase';
+import { CreateUserUseCase } from '@application/usecases/user/create-user.usecase';
 import { InputCreateUserDTO } from '@application/dtos/create-user.dto';
-import { FindUserByUidUseCase } from '@application/usecases/find-by-uid.usecase';
-import { UpdateUserStatusUseCase } from '@application/usecases/update-user-status.use-case';
+import { FindUserByUidUseCase } from '@application/usecases/user/find-by-uid.usecase';
+import { UpdateUserStatusUseCase } from '@application/usecases/user/update-user-status.use-case';
 import { StatusType } from '@domain/value-objects';
 
 @Injectable()

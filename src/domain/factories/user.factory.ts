@@ -5,7 +5,6 @@ import {
   EmailVO,
   PhoneNumberVO,
   StatusVO,
-  StatusType,
 } from '@domain/value-objects';
 
 export class UserFactory {
@@ -13,7 +12,7 @@ export class UserFactory {
     name: NameVO;
     phoneNumber: PhoneNumberVO;
     email: EmailVO;
-    status: StatusVO
+    status: StatusVO;
   }): UserEntity {
     const userProps: UserEntityProps = {
       ...props,

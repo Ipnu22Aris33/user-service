@@ -1,25 +1,21 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { UserController } from '@presentation/controllers/user.controller';
-import {
-  User,
-  UserSchema,
-} from '@infrastructure/databases/schemas/user.schema';
-import { UserRepository } from '@infrastructure/repositories/user.repository';
-import { CreateUserUseCase } from '@application/usecases/create-user.usecase';
+import { UserRepository } from '@infrastructure/databases/repositories/user.repository';
+import { CreateUserUseCase } from '@application/usecases/user/create-user.usecase';
 import { UserService } from '@application/services/user.service';
-import { FindUserByUidUseCase } from '@application/usecases/find-by-uid.usecase';
-import { UpdateUserStatusUseCase } from '@application/usecases/update-user-status.use-case';
-
+import { FindUserByUidUseCase } from '@application/usecases/user/find-by-uid.usecase';
+import { UpdateUserStatusUseCase } from '@application/usecases/user/update-user-status.use-case';
+import { DatabaseModule } from '@infrastructure/databases/database.module';
+import { HttpModule } from '@nestjs/axios';
+import { AuthModule } from '@infrastructure/security/auth.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-  ],
+  imports: [DatabaseModule, HttpModule, AuthModule, JwtModule],
   controllers: [UserController],
   providers: [
     {
-      provide: 'UserRepository',
+      provide: 'UserPort',
       useClass: UserRepository,
     },
     CreateUserUseCase,

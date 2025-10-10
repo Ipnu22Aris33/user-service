@@ -1,12 +1,12 @@
 import { Injectable, Inject } from '@nestjs/common';
-import type { IUserRepository } from '@application/ports/user.repository.port';
+import type { UserPort } from '@application/ports/user.port';
 import { StatusType, StatusVO } from '@domain/value-objects';
 import { UserEntity } from '@domain/entities/user.entity';
 
 @Injectable()
 export class UpdateUserStatusUseCase {
   constructor(
-    @Inject('UserRepository') private readonly userRepo: IUserRepository,
+    @Inject('UserPort') private readonly userRepo: UserPort,
   ) {}
 
   async execute({

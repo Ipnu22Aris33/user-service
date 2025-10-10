@@ -10,15 +10,15 @@ import { UserDocument } from '@infrastructure/databases/schemas/user.schema';
 
 export class UserMapper {
   static fromPersistence(user: UserDocument): UserEntity {
-    const uid = UidVO.fromValue(user.uid);
-    const name = NameVO.fromValue(user.name);
-    const email = EmailVO.fromValue(user.email);
-    const status = StatusVO.fromValue(user.status);
-    const phoneNumber = PhoneNumberVO.fromValue(user.phoneNumber);
-    const props = { uid, name, email, status, phoneNumber };
-    const { createdAt, updatedAt } = user;
-
-    return new UserEntity({ ...props, createdAt, updatedAt });
+    return new UserEntity({
+      uid: UidVO.fromValue(user.uid),
+      name: NameVO.fromValue(user.name),
+      email: EmailVO.fromValue(user.email),
+      status: StatusVO.fromValue(user.status),
+      phoneNumber: PhoneNumberVO.fromValue(user.phoneNumber),
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    });
   }
 
   static toPersistence(user: UserEntity) {

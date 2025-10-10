@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { IUserRepository } from '@application/ports/user.repository.port';
+import type { UserPort } from '@application/ports/user.port';
 import { UserFactory } from '@domain/factories/user.factory';
 import {
   NameVO,
@@ -14,7 +14,7 @@ import { UserEntity } from '@domain/entities/user.entity';
 @Injectable()
 export class CreateUserUseCase {
   constructor(
-    @Inject('UserRepository') private readonly repo: IUserRepository,
+    @Inject('UserPort') private readonly repo: UserPort,
   ) {}
 
   async execute(data: InputCreateUserDTO): Promise<UserEntity> {

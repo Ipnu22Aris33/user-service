@@ -1,10 +1,10 @@
-import { UnprocessableEntityException } from "@nestjs/common";
+import { UnprocessableEntityException } from '@nestjs/common';
 
 export enum StatusType {
-  PENDING = 'pending',
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
-  BANNED = 'banned',
+  PENDING = 'PENDING',
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  BANNED = 'BANNED',
 }
 
 export class StatusVO {
@@ -19,7 +19,7 @@ export class StatusVO {
     return new StatusVO(value);
   }
 
-  getValue(): string {
+  getValue(): StatusType {
     return this.value;
   }
 

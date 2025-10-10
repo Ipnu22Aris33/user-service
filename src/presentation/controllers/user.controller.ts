@@ -1,4 +1,4 @@
-import { Controller, Body, Post, Get, Param, Query, Put } from '@nestjs/common';
+import { Controller, Body, Post, Get, Param, Query, Put, UseGuards } from '@nestjs/common';
 import { UserService } from '@application/services/user.service';
 import { UserEntity } from '@domain/entities/user.entity';
 import { UserResponseMapper } from '@presentation/mappers/user-response.mapper';
@@ -14,12 +14,16 @@ import {
   type UpdateUserStatusRequestDTO,
   UpdateUserStatusRequestSchema,
 } from '@presentation/dtos/request/update-user-status.dto';
+import { JwtAuthGuard } from '@infrastructure/security/jwt-auth.guard';
+import { Roles } from '@infrastructure/security/role.decorator';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('create')
+  // @UseGuards(JwtAuthGuard)
+  // @Roles('admin')
   async create(@Body() body: CreateUserRequestDTO) {
     const parsed = CreateUserRequestSchema.parse(body);
     const user = await this.userService.create(parsed);

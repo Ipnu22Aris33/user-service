@@ -5,3 +5,6 @@ export * from '@domain/value-objects/password.vo';
 export * from '@domain/value-objects/role.vo';
 export * from '@domain/value-objects/phone-number.vo';
 export * from '@domain/value-objects/status.vo';
+export * from '@domain/value-objects/address-line.vo';
+export * from '@domain/value-objects/label.vo';
+export * from '@domain/value-objects/postal-code.vo';

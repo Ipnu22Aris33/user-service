@@ -1,17 +1,24 @@
-import { PhoneNumberVO, UidVO } from '@domain/value-objects';
+import {
+  NameVO,
+  PhoneNumberVO,
+  UidVO,
+  AddressLineVO,
+  LabelVO,
+  PostalCodeVO,
+} from '@domain/value-objects';
 
 export interface AddressEntityProps {
   uid: UidVO;
   userUid: UidVO;
-  label: string;
-  recipientName: string;
+  label: LabelVO;
+  recipientName: NameVO;
   phoneNumber: PhoneNumberVO;
-  addressLine1: string;
-  addressLine2?: string;
+  addressLine1: AddressLineVO;
+  addressLine2: AddressLineVO | null;
   city: string;
   region: string;
   country: string;
-  postalCode: string;
+  postalCode: PostalCodeVO;
   isActive: boolean;
   isDefault: boolean;
   createdAt: Date;
@@ -20,151 +27,104 @@ export interface AddressEntityProps {
 }
 
 export class AddressEntity {
-  private readonly _uid: UidVO;
-  private readonly _createdAt: Date;
-  private _userUid: UidVO;
-  private _label: string;
-  private _recipientName: string;
-  private _phoneNumber: PhoneNumberVO;
-  private _addressLine1: string;
-  private _addressLine2?: string;
-  private _city: string;
-  private _region: string;
-  private _country: string;
-  private _postalCode: string;
-  private _isActive: boolean;
-  private _isDefault: boolean;
-  private _updatedAt: Date;
-  private _deletedAt: Date | null;
-
-  private constructor(props: AddressEntityProps) {
-    this._uid = props.uid;
-    this._userUid = props.userUid;
-    this._label = props.label;
-    this._recipientName = props.recipientName;
-    this._phoneNumber = props.phoneNumber;
-    this._addressLine1 = props.addressLine1;
-    this._addressLine2 = props.addressLine2;
-    this._city = props.city;
-    this._region = props.region;
-    this._country = props.country;
-    this._postalCode = props.postalCode;
-    this._isActive = props.isActive;
-    this._isDefault = props.isDefault;
-    this._createdAt = props.createdAt;
-    this._updatedAt = props.updatedAt;
-    this._deletedAt = props.deletedAt;
-  }
+  constructor(private readonly props: AddressEntityProps) {}
 
   private touch(): void {
-    this._updatedAt = new Date();
+    this.props.updatedAt = new Date();
   }
 
-  activate(): void {
-    this._isActive = true;
+  updateAddressLine1(newLine1: AddressLineVO): void {
+    if (this.props.addressLine1.equals(newLine1)) return;
+    this.props.addressLine1 = newLine1;
     this.touch();
   }
 
-  deactivate(): void {
-    this._isActive = false;
+  updateAddressLine2(newLine2: AddressLineVO): void {
+    if (this.props.addressLine2?.equals(newLine2)) return;
+    this.props.addressLine2 = newLine2;
     this.touch();
   }
 
-  markAsDefault(): void {
-    this._isDefault = true;
-    this.touch();
-  }
-
-  unmarkAsDefault(): void {
-    this._isDefault = false;
-    this.touch();
-  }
-
-  updateAddressLine1(newLine1: string): void {
-    this._addressLine1 = newLine1;
-    this.touch();
-  }
-
-  updateAddressLine2(newLine2?: string): void {
-    this._addressLine2 = newLine2;
-    this.touch();
-  }
-
-  updateRecipient(name: string, phoneNumber: PhoneNumberVO): void {
-    this._recipientName = name;
-    this._phoneNumber = phoneNumber;
+  updateRecipient(name: NameVO, phoneNumber: PhoneNumberVO): void {
+    if (
+      this.props.recipientName.equals(name) ||
+      this.props.phoneNumber.equal(phoneNumber)
+    )
+      return;
+    this.props.recipientName = name;
+    this.props.phoneNumber = phoneNumber;
     this.touch();
   }
 
   softDelete(): void {
-    this._deletedAt = new Date();
-    this._isActive = false;
+    this.props.deletedAt = new Date();
+    this.props.isActive = false;
     this.touch();
   }
 
   // Getter Methods
   getUid(): string {
-    return this._uid.getValue();
+    return this.props.uid.getValue();
   }
 
   getUserUid(): string {
-    return this._userUid.getValue();
+    return this.props.userUid.getValue();
   }
 
   getLabel(): string {
-    return this._label;
+    return this.props.label.getValue();
   }
 
   getRecipientName(): string {
-    return this._recipientName;
+    return this.props.recipientName.getValue();
   }
 
   getPhoneNumber(): string {
-    return this._phoneNumber.getValue();
+    return this.props.phoneNumber.getValue();
   }
 
   getAddressLine1(): string {
-    return this._addressLine1;
+    return this.props.addressLine1.getValue();
   }
 
   getAddressLine2(): string | undefined {
-    return this._addressLine2;
+    return this.props.addressLine2?.getValue();
   }
 
   getCity(): string {
-    return this._city;
+    return this.props.city;
   }
 
   getRegion(): string {
-    return this._region;
+    return this.props.region;
   }
 
   getCountry(): string {
-    return this._country;
+    return this.props.country;
   }
 
   getPostalCode(): string {
-    return this._postalCode;
+    return this.props.postalCode.getValue();
   }
 
   getIsActive(): boolean {
-    return this._isActive;
+    return this.props.isActive;
   }
 
   getIsDefault(): boolean {
-    return this._isDefault;
+    return this.props.isDefault;
   }
 
   getCreatedAt(): Date {
-    return this._createdAt;
+    return this.props.createdAt;
   }
 
   getUpdatedAt(): Date {
-    return this._updatedAt;
+    return this.props.updatedAt;
   }
 
   getDeletedAt(): Date | null {
-    return this._deletedAt;
+    return this.props.deletedAt;
   }
 
   // toObject for persistence or API response

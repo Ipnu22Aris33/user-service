@@ -1,11 +1,11 @@
 import { Injectable, Inject, NotFoundException } from '@nestjs/common';
-import type { IUserRepository } from '@application/ports/user.repository.port';
+import type { UserPort } from '@application/ports/user.port';
 import { UserEntity } from '@domain/entities/user.entity';
 
 @Injectable()
 export class FindUserByUidUseCase {
   constructor(
-    @Inject('UserRepository') private readonly repo: IUserRepository,
+    @Inject('UserPort') private readonly repo: UserPort,
   ) {}
 
   async execute(uid: string): Promise<UserEntity | null> {
