@@ -1,19 +1,12 @@
-// src/infrastructure/database/database.module.ts
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User, UserSchema } from './schemas/user.schema';
 import { Address, AddressSchema } from './schemas/address.schema';
+import { MongoDBConfig } from '@infrastructure/config/mongodb.config';
 
 @Module({
   imports: [
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGOOSE_URI'),
-      }),
-    }),
+    MongoDBConfig,
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Address.name, schema: AddressSchema },
@@ -21,4 +14,4 @@ import { Address, AddressSchema } from './schemas/address.schema';
   ],
   exports: [MongooseModule],
 })
-export class DatabaseModule {}
+export class DBMongooseModule {}

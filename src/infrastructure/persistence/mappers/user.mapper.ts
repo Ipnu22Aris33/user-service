@@ -6,7 +6,7 @@ import {
   StatusVO,
 } from '@domain/value-objects';
 import { UserEntity } from '@domain/entities/user.entity';
-import { UserDocument } from '@infrastructure/databases/schemas/user.schema';
+import { UserDocument } from '@infrastructure/persistence/databases/mongoose/schemas/user.schema';
 
 export class UserMapper {
   static fromPersistence(user: UserDocument): UserEntity {

@@ -5,10 +5,10 @@ import { Model } from 'mongoose';
 import {
   User,
   UserDocument,
-} from '@infrastructure/databases/schemas/user.schema';
+} from '@infrastructure/persistence/databases/mongoose/schemas/user.schema';
 import { UserPort } from '@application/ports/user.port';
 import { UserEntity } from '@domain/entities/user.entity';
-import { UserMapper } from '@infrastructure/mappers/user.mapper';
+import { UserMapper } from '@infrastructure/persistence/mappers/user.mapper';
 
 @Injectable()
 export class UserRepository implements UserPort {

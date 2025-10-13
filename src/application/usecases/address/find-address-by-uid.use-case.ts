@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AddressRepository } from '@infrastructure/databases/repositories/address.repository';
+import { AddressRepository } from '@infrastructure/persistence/databases/mongoose/repositories/address.repository';
 import { AddressEntity } from '@domain/entities/address.entity';
 
 @Injectable()

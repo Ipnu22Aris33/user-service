@@ -7,7 +7,7 @@ import {
   LabelVO,
   PostalCodeVO,
 } from '@domain/value-objects';
-import { AddressDocument } from '@infrastructure/databases/schemas/address.schema';
+import { AddressDocument } from '@infrastructure/persistence/databases/mongoose/schemas/address.schema';
 
 export class AddressMapper {
   static fromPersistence(address: AddressDocument): AddressEntity {

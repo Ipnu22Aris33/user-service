@@ -3,8 +3,8 @@ import { AddressEntity } from '@domain/entities/address.entity';
 import {
   Address,
   AddressDocument,
-} from '@infrastructure/databases/schemas/address.schema';
-import { AddressMapper } from '@infrastructure/mappers/address.mapper';
+} from '@infrastructure/persistence/databases/mongoose/schemas/address.schema';
+import { AddressMapper } from '@infrastructure/persistence/mappers/address.mapper';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
