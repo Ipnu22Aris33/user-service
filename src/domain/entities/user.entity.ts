@@ -4,7 +4,7 @@ import {
   NameVO,
   PhoneNumberVO,
   StatusVO,
-  StatusType,
+  StatusEnumType,
 } from '@domain/value-objects';
 
 export interface UserEntityProps {

@@ -1,5 +1,9 @@
-export class EmailVO {
-  private constructor(private readonly value: string) {}
+import { BaseVO } from '@domain/base/base.vo';
+
+export class EmailVO extends BaseVO<string> {
+  private constructor(value: string) {
+    super(value);
+  }
 
   static create(value: string): EmailVO {
     this.validate(value);
@@ -9,14 +13,6 @@ export class EmailVO {
 
   static fromValue(value: string): EmailVO {
     return new EmailVO(value);
-  }
-
-  getValue(): string {
-    return this.value;
-  }
-
-  equals(other: EmailVO) {
-    return this.value === other.value;
   }
 
   private static validate(value: string) {

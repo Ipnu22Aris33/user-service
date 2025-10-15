@@ -6,7 +6,7 @@ import {
   EmailVO,
   PhoneNumberVO,
   StatusVO,
-  StatusType,
+  StatusEnumType,
 } from '@domain/value-objects';
 import { InputCreateUserDTO } from '@application/dtos/create-user.dto';
 import { UserEntity } from '@domain/entities/user.entity';

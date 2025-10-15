@@ -16,7 +16,7 @@ export class UserFactory {
   }): UserEntity {
     const userProps: UserEntityProps = {
       ...props,
-      uid: UidVO.create(),
+      uid: UidVO.generate(),
       createdAt: new Date(),
       updatedAt: new Date(),
     };

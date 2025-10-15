@@ -1,28 +1,24 @@
-export class PostalCodeVO {
-  private constructor(private readonly value: string) {}
+import { BaseVO } from '@domain/base/base.vo';
+import { BadRequestException, UnprocessableEntityException } from '@nestjs/common';
 
-  /** Membuat VO baru dengan validasi */
+export class PostalCodeVO extends BaseVO<string> {
+  private constructor(value: string) {
+    super(value);
+  }
+
   static create(value: string): PostalCodeVO {
     this.validate(value);
     return new PostalCodeVO(value);
   }
 
-  /** Ambil value mentah */
-  getValue(): string {
-    return this.value;
+  static fromValue(value: string): PostalCodeVO {
+    return new PostalCodeVO(value);
   }
 
-  /** Bandingkan dengan PostalCodeVO lain */
-  equals(other: PostalCodeVO): boolean {
-    return this.value === other.value;
-  }
-
-  /** Validasi format postal code */
-  private static validate(value: string) {
-    if (!value) throw new Error('Postal code is required');
+  private static validate(value: string): void {
+    if (!value) throw new BadRequestException('Postal code is required');
     const trimmed = value.trim();
-    if (trimmed.length === 0) throw new Error('Postal code cannot be empty');
-    if (!/^\d{5}$/.test(trimmed))
-      throw new Error('Postal code must be 5 digits');
+    if (trimmed.length === 0) throw new BadRequestException('Postal code cannot be empty');
+    if (!/^\d{5}$/.test(trimmed)) throw new UnprocessableEntityException('Postal code must be 5 digits');
   }
 }

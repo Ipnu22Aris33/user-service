@@ -5,7 +5,7 @@ import { CreateUserUseCase } from '@application/usecases/user/create-user.usecas
 import { InputCreateUserDTO } from '@application/dtos/create-user.dto';
 import { FindUserByUidUseCase } from '@application/usecases/user/find-by-uid.usecase';
 import { UpdateUserStatusUseCase } from '@application/usecases/user/update-user-status.use-case';
-import { StatusType } from '@domain/value-objects';
+import { StatusEnumType } from '@domain/value-objects';
 
 @Injectable()
 export class UserService {
@@ -19,11 +19,11 @@ export class UserService {
     name: string;
     email: string;
     phoneNumber: string;
-    status?: StatusType;
+    status?: StatusEnumType;
   }) {
     const data = await this.createUserUseCase.execute({
       ...dto,
-      status: dto.status ?? StatusType.PENDING,
+      status: dto.status ?? StatusEnumType.PENDING,
     });
     console.log(dto.status)
     return data;
@@ -35,7 +35,7 @@ export class UserService {
     return doc;
   }
 
-  async updateStatus({ uid, status }: { uid: string; status: StatusType }) {
+  async updateStatus({ uid, status }: { uid: string; status: StatusEnumType }) {
     const doc = await this.updateUserStatusUseCase.execute({ uid, status });
     if (!doc) throw new NotFoundException('kk');
     return doc;

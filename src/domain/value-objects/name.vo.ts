@@ -1,5 +1,9 @@
-export class NameVO {
-  private constructor(private readonly value: string) {}
+import { BaseVO } from '@domain/base/base.vo';
+
+export class NameVO extends BaseVO<string> {
+  private constructor(value: string) {
+    super(value);
+  }
 
   static create(value: string): NameVO {
     this.validate(value);
@@ -8,14 +12,6 @@ export class NameVO {
 
   static fromValue(value: string): NameVO {
     return new NameVO(value);
-  }
-
-  getValue() {
-    return this.value;
-  }
-
-  equals(other: NameVO) {
-    return this.value === other.value;
   }
 
   private static validate(value: string) {

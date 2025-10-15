@@ -1,8 +1,8 @@
-import { StatusType } from "@domain/value-objects";
+import { StatusEnumType } from "@domain/value-objects";
 
 export type InputCreateUserDTO = {
   name: string;
   email: string;
   phoneNumber: string;
-  status: StatusType
+  status: StatusEnumType
 };

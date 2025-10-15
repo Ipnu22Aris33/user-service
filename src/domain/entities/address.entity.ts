@@ -48,7 +48,7 @@ export class AddressEntity {
   updateRecipient(name: NameVO, phoneNumber: PhoneNumberVO): void {
     if (
       this.props.recipientName.equals(name) ||
-      this.props.phoneNumber.equal(phoneNumber)
+      this.props.phoneNumber.equals(phoneNumber)
     )
       return;
     this.props.recipientName = name;

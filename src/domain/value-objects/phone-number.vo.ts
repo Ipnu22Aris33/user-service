@@ -1,10 +1,10 @@
-import {
-  BadRequestException,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { BaseVO } from '@domain/base/base.vo';
+import { BadRequestException, UnprocessableEntityException } from '@nestjs/common';
 
-export class PhoneNumberVO {
-  constructor(private readonly value: string) {}
+export class PhoneNumberVO extends BaseVO<string> {
+  private constructor(value: string) {
+    super(value);
+  }
 
   static create(value: string): PhoneNumberVO {
     this.validate(value);
@@ -13,14 +13,6 @@ export class PhoneNumberVO {
 
   static fromValue(value: string): PhoneNumberVO {
     return new PhoneNumberVO(value);
-  }
-
-  getValue() {
-    return this.value;
-  }
-
-  equal(other: PhoneNumberVO) {
-    return this.value === other.value;
   }
 
   private static validate(value: string) {

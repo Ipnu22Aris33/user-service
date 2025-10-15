@@ -1,5 +1,10 @@
-export class AddressLineVO {
-  private constructor(private readonly value: string) {}
+import { BaseVO } from '@domain/base/base.vo';
+import { BadRequestException, UnprocessableEntityException } from '@nestjs/common';
+
+export class AddressLineVO extends BaseVO<string> {
+  private constructor(value: string) {
+    super(value);
+  }
 
   static create(value: string): AddressLineVO {
     this.validate(value);
@@ -18,18 +23,10 @@ export class AddressLineVO {
     return value === null ? null : this.fromValue(value);
   }
 
-  getValue() {
-    return this.value;
-  }
-
-  equals(other: AddressLineVO) {
-    return this.value === other.value;
-  }
-
   private static validate(value: string) {
-    if (!value) throw new Error('Name is required');
-    if (value.trim().length === 0) throw new Error('Name invalid');
-    if (value.length > 254) throw new Error('Name is too long');
-    if (!/^[a-zA-Z\s]+$/.test(value)) throw new Error('Name invalid');
+    if (!value) throw new BadRequestException('Address line is required');
+    if (value.trim().length === 0) throw new BadRequestException('Address line invalid');
+    if (value.length > 254) throw new UnprocessableEntityException('Address line is too long');
+    if (!/^[a-zA-Z\s]+$/.test(value)) throw new BadRequestException('Address line invalid');
   }
 }

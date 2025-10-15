@@ -1,4 +1,4 @@
-import { StatusType } from '@domain/value-objects';
+import { StatusEnumType } from '@domain/value-objects';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -16,8 +16,8 @@ export class User extends Document {
   @Prop({ type: String })
   phoneNumber: string;
 
-  @Prop({ default: StatusType.PENDING })
-  status: StatusType;
+  @Prop({ default: StatusEnumType.PENDING })
+  status: StatusEnumType;
 
   @Prop({ default: Date.now })
   createdAt: Date;

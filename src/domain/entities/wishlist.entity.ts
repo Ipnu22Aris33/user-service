@@ -1,11 +1,17 @@
-import { UidVO } from "@domain/value-objects";
+import { BaseEntity, BaseEntityProps } from '@domain/base/base.entity';
+import { UidVO } from '@domain/value-objects';
 
-export interface WishlistEntityProps {
-  uid: UidVO;
+export interface WishlistEntityProps extends BaseEntityProps {
   userUid: UidVO;
   productUid: UidVO;
   notes: string;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date | null;
+}
+
+export class WishListEntity extends BaseEntity<WishlistEntityProps> {
+  private constructor(props: WishlistEntityProps) {
+    super(props);
+  }
+
+  static create(){}
+  static reconstruct(){}
 }

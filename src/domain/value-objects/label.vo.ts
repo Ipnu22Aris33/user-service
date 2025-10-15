@@ -1,5 +1,11 @@
-export class LabelVO {
-  private constructor(private readonly value: string) {}
+import { BaseVO } from '@domain/base/base.vo';
+import { BadRequestException } from '@nestjs/common';
+import { UnprocessableEntityException } from '@nestjs/common';
+
+export class LabelVO extends BaseVO<string> {
+  private constructor(value: string) {
+    super(value);
+  }
 
   static create(value: string): LabelVO {
     this.validate(value);
@@ -10,18 +16,10 @@ export class LabelVO {
     return new LabelVO(value);
   }
 
-  getValue() {
-    return this.value;
-  }
-
-  equals(other: LabelVO) {
-    return this.value === other.value;
-  }
-
   private static validate(value: string) {
-    if (!value) throw new Error('Name is required');
-    if (value.trim().length === 0) throw new Error('Name invalid');
-    if (value.length > 50) throw new Error('Name is too long');
-    if (!/^[a-zA-Z\s]+$/.test(value)) throw new Error('Name invalid');
+    if (!value) throw new BadRequestException('Label is required');
+    if (value.trim().length === 0) throw new BadRequestException('Label invalid');
+    if (value.length > 50) throw new UnprocessableEntityException('Label is too long');
+    if (!/^[a-zA-Z\s]+$/.test(value)) throw new UnprocessableEntityException('Label invalid');
   }
 }

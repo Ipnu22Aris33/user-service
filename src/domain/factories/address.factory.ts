@@ -28,7 +28,7 @@ export class AddressFactory {
   }) {
     const addressProps: AddressEntityProps = {
       ...props,
-      uid: UidVO.create(),
+      uid: UidVO.generate(),
       isActive: true,
       createdAt: new Date(),
       updatedAt: new Date(),
