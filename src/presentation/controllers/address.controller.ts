@@ -8,17 +8,17 @@ import { AddressResponseMapper } from '@presentation/mappers/address-response.ma
 
 @Controller('address')
 export class AddressController {
-  constructor(private readonly addressService: AddressService) {}
+  // constructor(private readonly addressService: AddressService) {}
 
-  @Post('create')
-  // @UseGuards(JwtAuthGuard)
-  async create(@Body() dto: CreateAddressUseCaseDTO) {
-    return await this.addressService.createAddress(dto);
-  }
-  @Get(':uid')
-  async findAddressByUid(@Param() param: UidParamRequestDTO) {
-    const { uid } = UidParamRequestSchema.parse(param);
-    const address = await this.addressService.findAddressByUid(uid);
-    return AddressResponseMapper.toResponse(address);
-  }
+  // @Post('create')
+  // // @UseGuards(JwtAuthGuard)
+  // async create(@Body() dto: CreateAddressUseCaseDTO) {
+  //   return await this.addressService.createAddress(dto);
+  // }
+  // @Get(':uid')
+  // async findAddressByUid(@Param() param: UidParamRequestDTO) {
+  //   const { uid } = UidParamRequestSchema.parse(param);
+  //   const address = await this.addressService.findAddressByUid(uid);
+  //   return AddressResponseMapper.toResponse(address);
+  // }
 }

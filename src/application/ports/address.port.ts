@@ -5,4 +5,5 @@ export const ADDRESS_PORT = Symbol('ADDRESS_PORT');
 export interface AddressPort {
   save(address: AddressEntity): Promise<AddressEntity>;
   findByUid(uid: string): Promise<AddressEntity | null>;
+  findByUserUid(userUid: string): Promise<AddressEntity | null>;
 }

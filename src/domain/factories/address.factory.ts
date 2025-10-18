@@ -1,39 +1,46 @@
+import { BaseFactory } from '@domain/base/base.factory';
 import {
   AddressEntity,
   AddressEntityProps,
 } from '@domain/entities/address.entity';
-
 import {
-  NameVO,
-  PhoneNumberVO,
-  UidVO,
+  ActivateStatusEnumType,
+  ActivateStatusVO,
   AddressLineVO,
   LabelVO,
   PostalCodeVO,
+  UidVO,
 } from '@domain/value-objects';
 
-export class AddressFactory {
-  static create(props: {
-    userUid: UidVO;
-    label: LabelVO;
-    recipientName: NameVO;
-    phoneNumber: PhoneNumberVO;
-    addressLine1: AddressLineVO;
-    addressLine2: AddressLineVO | null;
-    city: string;
-    region: string;
-    country: string;
-    postalCode: PostalCodeVO;
-    isDefault: boolean;
-  }) {
-    const addressProps: AddressEntityProps = {
-      ...props,
-      uid: UidVO.generate(),
-      isActive: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      deletedAt: null,
+export class AddressFactoryProps {
+  userUid: UidVO;
+  label: LabelVO;
+  addressLine1: AddressLineVO;
+  addressLine2: AddressLineVO | null;
+  city: string;
+  region: string;
+  country: string;
+  postalCode: PostalCodeVO;
+  isDefault: boolean;
+}
+
+export class AddressFactory extends BaseFactory<{
+  factoryProps: AddressFactoryProps;
+  entityProps: AddressEntityProps;
+  entity: AddressEntity;
+}> {
+  protected entityClass = AddressEntity;
+
+  protected getDefaults(): Partial<AddressEntityProps> {
+    return {
+      status: ActivateStatusVO.create(ActivateStatusEnumType.ACTIVE),
     };
-    return new AddressEntity(addressProps);
+  }
+
+  createNew(props: { props: AddressFactoryProps; actor?: UidVO }) {
+    return this.create({
+      props: props.props,
+      actor: props.actor,
+    });
   }
 }

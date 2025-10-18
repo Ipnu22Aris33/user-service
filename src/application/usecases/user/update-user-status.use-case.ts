@@ -15,11 +15,11 @@ export class UpdateUserStatusUseCase {
   }: {
     uid: string;
     status: StatusEnumType;
-  }): Promise<UserEntity | null> {
-    const user = await this.userRepo.findByUid(uid);
-    if (!user) return null;
-    const statusVO = StatusVO.create(status);
-    user.changeStatus(statusVO);
-    return await this.userRepo.save(user);
+  }) {
+    // const user = await this.userRepo.findByUid(uid);
+    // if (!user) return null;
+    // const statusVO = StatusVO.create(status);
+    // user.changeStatus(statusVO);
+    // return await this.userRepo.save(user);
   }
 }

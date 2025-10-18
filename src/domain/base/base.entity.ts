@@ -19,7 +19,7 @@ export abstract class BaseEntity<TProps extends BaseEntityProps> {
 
   // ---------- MUTATORS ----------
 
-  touch(actor?: UidVO) {
+  protected touch(actor?: UidVO) {
     this.props.updatedAt = new Date();
     if (actor) this.props.updatedBy = actor;
   }
@@ -42,31 +42,31 @@ export abstract class BaseEntity<TProps extends BaseEntityProps> {
     return this.props;
   }
 
-  getUidValue(): string {
+  getUid(): string {
     return this.props.uid.getValue();
   }
 
-  getCreatedByValue(): string | null {
+  getCreatedBy(): string | null {
     return this.props.createdBy?.getValue() || null;
   }
 
-  getUpdatedByValue(): string | null {
+  getUpdatedBy(): string | null {
     return this.props.updatedBy?.getValue() || null;
   }
 
-  getDeletedByValue(): string | null {
+  getDeletedBy(): string | null {
     return this.props.deletedBy?.getValue() || null;
   }
 
-  getCreatedAtValue(): Date {
+  getCreatedAt(): Date {
     return this.props.createdAt;
   }
 
-  getUpdatedAtValue(): Date {
+  getUpdatedAt(): Date {
     return this.props.updatedAt;
   }
 
-  getDeletedAtValue(): Date | null | undefined {
+  getDeletedAt(): Date | null | undefined {
     return this.props.deletedAt;
   }
 }
