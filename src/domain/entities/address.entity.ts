@@ -100,4 +100,7 @@ export class AddressEntity extends BaseEntity<AddressEntityProps> {
   getStatusValue(): ActivateStatusEnumType {
     return this.props.status.getValue();
   }
+  getIsDefault(): boolean {
+    return this.props.isDefault;
+  }
 }

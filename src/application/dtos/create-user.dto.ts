@@ -1,8 +1,8 @@
-import { StatusEnumType } from "@domain/value-objects";
+import { StatusEnumType } from '@domain/value-objects';
 
-export type InputCreateUserDTO = {
+export class InputCreateUserDTO {
   name: string;
   email: string;
   phoneNumber: string;
-  status: StatusEnumType
-};
+  status: StatusEnumType;
+}

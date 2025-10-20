@@ -1,5 +1,5 @@
-import { AddressService } from '@application/services/address.service';
-import type { CreateAddressUseCaseDTO } from '@application/usecases/address/create-address.usecase';
+// import { AddressService } from '@application/services/address.service';
+// import type { CreateAddressUseCaseDTO } from '@application/usecases/address/create-address.usecase';
 import { JwtAuthGuard } from '@infrastructure/security/jwt-auth.guard';
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import type { UidParamRequestDTO } from '@presentation/dtos/request/uid-param.dto';
