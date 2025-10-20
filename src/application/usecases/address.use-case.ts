@@ -1,7 +1,7 @@
+import { Injectable } from '@nestjs/common';
 import { CreateAddressDTO } from '@application/dtos/create-address.dto';
 import { AddressInPort } from '@application/ports/in/address.in-port';
 import { AddressService } from '@application/services/address.service';
-import { ProfileService } from '@application/services/profile.service';
 import { CreateAddressResult } from '@application/types/address-use-case.type';
 import { AddressFactory } from '@domain/factories/address.factory';
 import {
@@ -10,46 +10,45 @@ import {
   PostalCodeVO,
   UidVO,
 } from '@domain/value-objects';
-import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AddressUseCase implements AddressInPort {
-  constructor(
-    private readonly addressService: AddressService,
-    private readonly profileService: ProfileService,
-  ) {}
+  constructor(private readonly addressService: AddressService) {}
 
   async createAddress(dto: CreateAddressDTO): Promise<CreateAddressResult> {
-    const address = await this.addressService.findByUserUid(dto.userUid);
+    const existingAddresses = await this.addressService.findByUserUid(
+      dto.userUid,
+    );
+    const isDefault = existingAddresses.length === 0 || dto.isDefault;
 
-    if (dto.isDefault) {
-      for (const addr of address) {
-        if (addr.getIsDefault()) {
-          addr.deActivate();
-          await this.addressService.save(addr);
-        }
+    if (isDefault && existingAddresses.length > 0) {
+      const addressesToUpdate = existingAddresses
+        .filter((addr) => addr.getIsDefault())
+        .map((addr) => (addr.deActivate(), addr));
+
+      if (addressesToUpdate.length > 0) {
+        await this.addressService.bulkSave(addressesToUpdate);
       }
     }
 
-    const saved = new AddressFactory().createNew({
-      props: {
-        userUid: UidVO.create(dto.userUid),
-        label: LabelVO.create(dto.label),
-        addressLine1: AddressLineVO.create(dto.addressLine1),
-        addressLine2: AddressLineVO.createOptional(dto.addressLine2),
-        city: dto.city,
-        region: dto.region,
-        country: dto.country,
-        postalCode: PostalCodeVO.create(dto.postalCode),
-        isDefault: dto.isDefault,
-      },
-    });
-
-    await this.addressService.save(saved);
-    const result = {
-      address: saved,
-      message: '',
+    const addressProps = {
+      userUid: UidVO.create(dto.userUid),
+      label: LabelVO.create(dto.label),
+      addressLine1: AddressLineVO.create(dto.addressLine1),
+      addressLine2: AddressLineVO.createOptional(dto.addressLine2),
+      city: dto.city,
+      region: dto.region,
+      country: dto.country,
+      postalCode: PostalCodeVO.create(dto.postalCode),
+      isDefault,
     };
-    return result;
+
+    const newAddress = new AddressFactory().createNew({ props: addressProps });
+    await this.addressService.save(newAddress);
+
+    return {
+      address: newAddress,
+      message: 'Address created successfully',
+    };
   }
 }

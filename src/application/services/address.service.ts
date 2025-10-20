@@ -23,4 +23,8 @@ export class AddressService {
   async findByUserUid(uid: string): Promise<AddressEntity[]> {
     return await this.findByUserUid(uid);
   }
+
+  async bulkSave(address: AddressEntity[]): Promise<void> {
+    await this.port.bulkSave(address);
+  }
 }

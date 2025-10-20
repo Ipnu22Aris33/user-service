@@ -21,6 +21,6 @@ export class ProfileService {
   }
 
   async findByUserUid(uid: string): Promise<ProfileEntity | null> {
-    return await this.findByUserUid(uid);
+    return await this.port.findByUserUid(uid);
   }
 }
