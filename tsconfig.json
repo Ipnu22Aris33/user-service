@@ -14,8 +14,9 @@
     "sourceMap": true,
     "outDir": "./dist",
     "paths": {
-      "@domain/*": ["src/domain/*"],
-      "@application/*": ["src/application/*"],
+      "@domain/*": ["src/core/domain/*"],
+      "@application/*": ["src/core/application/*"],
+      "@helper/*": ["src/core/helper/*"],
       "@infrastructure/*": ["src/infrastructure/*"],
       "@presentation/*": ["src/presentation/*"],
       "@common/*": ["src/common/*"]

@@ -1,8 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { ActivateStatusEnum } from '@domain/enums/activate-status.enum';
 
 @Schema({ collection: 'addresses' })
-export class Address extends Document {
+export class Address extends Document  {
   @Prop({ required: true, unique: true }) uid: string;
   @Prop({ type: String, required: true }) userUid: string;
   @Prop({ required: true }) label: string;
@@ -14,7 +15,7 @@ export class Address extends Document {
   @Prop({ required: true }) region: string;
   @Prop({ required: true }) country: string;
   @Prop({ required: true }) postalCode: string;
-  @Prop({ default: true }) isActive: boolean;
+  @Prop({ enum: ActivateStatusEnum }) status: ActivateStatusEnum;
   @Prop({ default: false }) isDefault: boolean;
   @Prop({ default: Date.now }) createdAt: Date;
   @Prop({ default: Date.now }) updatedAt: Date;

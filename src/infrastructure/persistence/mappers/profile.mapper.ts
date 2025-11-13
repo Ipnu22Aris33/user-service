@@ -1,16 +1,19 @@
-import { ProfileEntity } from '@domain/entities/profile.entity';
-import { ProfileModel } from '../models/profile.model';
+import { ProfileEntity, ProfileEntityProps } from '@domain/entities/profile.entity';
 
 export class ProfileMapper {
-  static toPersistense(profile: ProfileEntity): ProfileModel {
-    return {
-      uid: profile.getUid(),
-      userUid: profile.getUserUid(),
-      fullName: profile.getFullName(),
-      phoneNumber: profile.getPhoneNumber(),
-      profileStatus: profile.getProfileStatus(),
-      createdAt: profile.getCreatedAt(),
-      updatedAt: profile.getUpdatedAt(),
-    };
+  static toPersistence(entity: ProfileEntity): ProfileEntityProps {
+    return entity.toObject();
+  }
+
+  static toPersistenceArray(entities: ProfileEntity[]): ProfileEntityProps[] {
+    return entities.map((entity) => this.toPersistence(entity));
+  }
+
+  static toDomain(props: ProfileEntityProps): ProfileEntity {
+    return ProfileEntity.rehydrate(props);
+  }
+
+  static toDomainArray(props: ProfileEntityProps[]): ProfileEntity[] {
+    return props.map((entity) => this.toDomain(entity));
   }
 }
