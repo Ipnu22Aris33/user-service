@@ -28,7 +28,6 @@ export class UserUseCase implements UserInPort {
   async signIn(props: SignInInputType): Promise<SignInOutputType> {
     const user = await this.userOutPort.findByEmail(props.email);
     if (!user) throw new NotFoundException('User not found');
-    console.log(user);
     const isPasswordValid = await this.passwordHasher.compare(props.password, user.getPasswordHash());
     if (!isPasswordValid) throw new UnprocessableEntityException('Invalid password');
 
@@ -45,14 +44,11 @@ export class UserUseCase implements UserInPort {
       }),
     ]);
 
-    const [savedAccessToken, savedRefreshToken] = await Promise.all([
-      this.tokenOutPort.save(accessToken),
-      this.tokenOutPort.save(refreshToken),
-    ]);
+    const savedToken = await this.tokenOutPort.save(refreshToken);
 
     user.signIn();
 
-    return { user, accessToken: savedAccessToken.get('token'), refreshToken: savedRefreshToken.get('token') };
+    return { user, accessToken: accessToken.get('token'), refreshToken: savedToken.get('token') };
   }
 
   async signUp(props: SignUpInputType): Promise<SignUpOutputType> {
@@ -60,10 +56,8 @@ export class UserUseCase implements UserInPort {
       email: props.email,
       passwordHash: await this.passwordHasher.hash(props.password),
     });
-    console.log('user signup', user);
 
     const savedUser = await this.userOutPort.save(user);
-    console.log('savedUser', savedUser);
 
     const profile = ProfileEntity.create({
       userUid: savedUser.get('uid'),
@@ -76,7 +70,55 @@ export class UserUseCase implements UserInPort {
     return { user: savedUser, profile: savedProfile };
   }
 
-  // async signOut(uid: string): Promise<UserEntity> {
-  //   return await this.userOutPort.signOut(uid);
-  // }
+  async resetPasswordRequest(props: { email: string }) {
+    const user = await this.userOutPort.findByEmail(props.email);
+    if (!user) throw new NotFoundException('User not found');
+
+    const resetToken = await TokenHelper.generateToken(this.jwtServicePort, {
+      uid: user.get('uid'),
+      roleUid: user.get('roleUid'),
+      type: TokenTypeEnum.RESET_PASSWORD,
+    });
+
+    return await this.tokenOutPort.save(resetToken);
+  }
+
+  async resetPassword(props: { token: string; password: string }) {
+    const token = await this.tokenOutPort.findByToken(props.token);
+    if (!token) throw new NotFoundException('Token not found');
+    const isTokenValid = await TokenHelper.verifyToken(
+      this.jwtServicePort,
+      token.get('token'),
+      TokenTypeEnum.RESET_PASSWORD,
+    );
+    if (!isTokenValid) throw new UnprocessableEntityException('Invalid token');
+    if (token.get('isRevoked')) throw new UnprocessableEntityException('Token revoked');
+
+    const user = await this.userOutPort.findByUid(token.get('userUid'));
+    if (!user) throw new NotFoundException('User not found');
+
+    user.updatePasswordHash(await this.passwordHasher.hash(props.password), user.get('passwordHash'));
+    const savedUser = await this.userOutPort.save(user);
+    token.revoke(savedUser.get('uid'));
+    await this.tokenOutPort.save(token);
+    return savedUser;
+  }
+
+  async signOut(token: string): Promise<UserEntity> {
+    const isTokenValid = await TokenHelper.verifyToken(
+      this.jwtServicePort,
+      token,
+      TokenTypeEnum.ACCESS,
+    );
+    if (!isTokenValid) throw new UnprocessableEntityException('Invalid token');
+    const user = await this.userOutPort.findByUid(isTokenValid.sub);
+    if (!user) throw new NotFoundException('User not found');
+    const tokenEntity = await this.tokenOutPort.findByUserUid(user.get('uid'));
+    console.log('tokenEntityrr', tokenEntity);
+    if(!tokenEntity) throw new NotFoundException('Token not found');
+    tokenEntity.revoke(user.get('uid'));
+    await this.tokenOutPort.save(tokenEntity);
+    user.signOut();
+    return await this.userOutPort.save(user);
+  }
 }

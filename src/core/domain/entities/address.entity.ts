@@ -33,7 +33,6 @@ export class AddressEntity extends BaseEntity<AddressEntityProps> {
     super(props);
   }
 
-
   static create(props: AddressCreateProps): AddressEntity {
     const base = this.baseDefaults(props.actor);
     const defaults = {
@@ -113,44 +112,5 @@ export class AddressEntity extends BaseEntity<AddressEntityProps> {
     if (!newPostalCode) return;
     if (this.props.postalCode === newPostalCode) return;
     this.props.postalCode = newPostalCode;
-  }
-
-  getUserUid(): string {
-    return this.props.userUid;
-  }
-
-  getLabelValue(): string {
-    return this.props.label;
-  }
-
-  getAddressLine1Value(): string {
-    return this.props.addressLine1;
-  }
-
-  getAddressLine2Value(): string | null {
-    return this.props.addressLine2 ?? null;
-  }
-
-  getCityValue(): string {
-    return this.props.city;
-  }
-
-  getRegionValue(): string {
-    return this.props.region;
-  }
-
-  getCountryValue(): string {
-    return this.props.country;
-  }
-
-  getPostalCodeValue(): string {
-    return this.props.postalCode;
-  }
-
-  getStatusValue(): ActivateStatusEnum {
-    return this.props.status;
-  }
-  getIsDefault(): boolean {
-    return this.props.isDefault;
   }
 }

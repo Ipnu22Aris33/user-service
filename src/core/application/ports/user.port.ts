@@ -1,4 +1,5 @@
 import { SignInInputType, SignUpInputType, SignUpOutputType, SignInOutputType } from '@application/types/user-use-case.type';
+import { TokenEntity } from '@domain/entities/token.entity';
 import { UserEntity } from '@domain/entities/user.entity';
 
 export const USER_OUT_PORT = Symbol('USER_OUT_PORT');
@@ -13,5 +14,7 @@ export interface UserOutPort {
 export interface UserInPort {
   signIn(props: SignInInputType): Promise<SignInOutputType>;
   signUp(props: SignUpInputType): Promise<SignUpOutputType>;
-  // signOut(uid: string): Promise<UserEntity>;
+  resetPasswordRequest(props: { email: string }): Promise<TokenEntity>;
+  resetPassword(props: { token: string; password: string }): Promise<UserEntity>;
+  signOut(token: string): Promise<UserEntity>;
 }

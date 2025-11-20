@@ -15,13 +15,18 @@ export class TokenRepository implements TokenOutPort {
     const data = TokenMapper.toPersistence(token);
     const res = await this.tokenModel
       .findOneAndUpdate({ token: data.token }, { $set: data }, { upsert: true, new: true })
-      .exec();
+      .lean().exec();
 
     return TokenMapper.toDomain(res);
   }
 
   async findByToken(token: string): Promise<TokenEntity | null> {
-    const res = await this.tokenModel.findOne({ token }).exec();
+    const res = await this.tokenModel.findOne({ token }).lean().exec();
+    return res ? TokenMapper.toDomain(res) : null;
+  }
+
+  async findByUserUid(userUid: string): Promise<TokenEntity | null> {
+    const res = await this.tokenModel.findOne({ userUid }).lean().exec();
     return res ? TokenMapper.toDomain(res) : null;
   }
 }

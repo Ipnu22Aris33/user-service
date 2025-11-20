@@ -50,7 +50,7 @@ export class UserEntity extends BaseEntity<UserEntityProps> {
     this.touch(actor);
   }
 
-  signOut(actor: string): void {
+  signOut(actor?: string): void {
     this.props.lastSignOutAt = new Date();
     this.touch(actor);
   }
@@ -64,6 +64,7 @@ export class UserEntity extends BaseEntity<UserEntityProps> {
   updatePasswordHash(newPasswordHash: string, actor: string): void {
     if (this.props.passwordHash === newPasswordHash) return;
     this.props.passwordHash = newPasswordHash;
+    this.props.lastPasswordChangeAt = new Date();
     this.touch(actor);
   }
 

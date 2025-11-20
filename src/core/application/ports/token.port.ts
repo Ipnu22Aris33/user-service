@@ -6,5 +6,6 @@ export const TOKEN_IN_PORT = Symbol('TOKEN_IN_PORT');
 export interface TokenOutPort {
   save(token: TokenEntity): Promise<TokenEntity>;
   findByToken(token: string): Promise<TokenEntity | null>;
+  findByUserUid(userUid: string): Promise<TokenEntity | null>;
 }
 

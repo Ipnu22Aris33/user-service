@@ -41,13 +41,16 @@ export class TokenHelper {
   ): Promise<{ sub: string; role: string; type: TokenTypeEnum }> {
     try {
       const payload = await jwtService.verify(token);
+      console.log(payload);
 
-      if (expectedType && payload.type !== expectedType) {
+      if (payload.type !== expectedType) {
+        console.log(payload.type, expectedType);
         throw new UnauthorizedException(`Token type mismatch. Expected: ${expectedType}`);
       }
 
       return payload;
     } catch (err) {
+      if (err instanceof UnauthorizedException) throw err;
       throw new UnauthorizedException('Invalid or expired token');
     }
   }

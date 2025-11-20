@@ -68,17 +68,4 @@ export class ProfileEntity extends BaseEntity<ProfileEntityProps> {
     if (this.props.avatarUrl === newAvatarUrl) return;
     this.props.avatarUrl = newAvatarUrl;
   }
-
-  getUserUid(): string {
-    return this.props.userUid;
-  }
-  getFullName(): string {
-    return this.props.fullName;
-  }
-  getPhoneNumber(): string {
-    return this.props.phoneNumber;
-  }
-  getProfileStatus(): ProfileStatusEnum {
-    return this.props.profileStatus;
-  }
 }

@@ -1,5 +1,5 @@
 import { USER_IN_PORT, type UserInPort } from '@application/ports/user.port';
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Post, UnauthorizedException, Headers } from '@nestjs/common';
 
 @Controller('users')
 export class UserController {
@@ -14,7 +14,30 @@ export class UserController {
 
   @Post('sign-in')
   async signIn(@Body() body: { email: string; password: string }) {
-    console.log(body);
     return this.userInPort.signIn(body);
+  }
+
+  @Post('sign-out')
+  async signOut(@Headers('authorization') authHeader: string) {
+    const token = this.extractBearerToken(authHeader);
+    return this.userInPort.signOut(token);
+  }
+
+  @Post('reset-password-request')
+  async resetPasswordRequest(@Body() body: { email: string }) {
+    return this.userInPort.resetPasswordRequest(body);
+  }
+
+  @Post('reset-password')
+  async resetPassword(@Body() body: { password: string }, @Headers('authorization') authHeader: string) {
+    const token = this.extractBearerToken(authHeader);
+    return this.userInPort.resetPassword({ ...body, token });
+  }
+
+  private extractBearerToken(authHeader: string): string {
+    if (!authHeader?.startsWith('Bearer ')) {
+      throw new UnauthorizedException('Missing or invalid token');
+    }
+    return authHeader.replace('Bearer ', '').trim();
   }
 }
