@@ -1,5 +1,5 @@
-import { TokenEntity } from '@domain/entities/token.entity';
-import { TokenTypeEnum } from '@domain/enums/token-type.enum';
+import { TokenEntity } from '@core/domain/entities/token.entity';
+import { TokenTypeEnum } from 'src/core/common/enums/token-type.enum';
 import { UnauthorizedException } from '@nestjs/common';
 
 const DEFAULT_EXPIRES_MS: Record<TokenTypeEnum, number> = {

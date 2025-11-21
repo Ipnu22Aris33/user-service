@@ -1,5 +1,4 @@
-import { PROFILE_OUT_PORT, ProfileInPort, type ProfileOutPort } from '@application/ports/profile.port';
-import { ProfileEntity } from '@domain/entities/profile.entity';
+import { PROFILE_OUT_PORT, ProfileInPort, type ProfileOutPort } from '@core/application/ports/profile.port';
 import { Inject, Injectable } from '@nestjs/common';
 
 @Injectable()

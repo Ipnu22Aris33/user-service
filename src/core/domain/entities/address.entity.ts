@@ -1,5 +1,5 @@
-import { BaseEntity, BaseEntityProps } from '@helper/base/base.entity';
-import { ActivateStatusEnum } from '@domain/enums/activate-status.enum';
+import { BaseEntity, BaseEntityProps } from 'src/core/common/base/base.entity';
+import { ActivateStatusEnum } from 'src/core/common/enums/activate-status.enum';
 
 export interface AddressProps {
   userUid: string;

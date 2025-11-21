@@ -1,5 +1,5 @@
-import { BaseEntity, BaseEntityProps } from '@helper/base/base.entity';
-import { ProfileStatusEnum } from '@domain/enums/profile-status.enum';
+import { BaseEntity, BaseEntityProps } from 'src/core/common/base/base.entity';
+import { ProfileStatusEnum } from 'src/core/common/enums/profile-status.enum';
 
 export interface ProfileProps {
   userUid: string;

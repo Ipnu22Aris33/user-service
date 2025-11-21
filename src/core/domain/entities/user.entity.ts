@@ -1,5 +1,5 @@
-import { BaseEntity, BaseEntityProps } from '@helper/base/base.entity';
-import { UserStatusEnum } from '@domain/enums/user-status.enum';
+import { BaseEntity, BaseEntityProps } from 'src/core/common/base/base.entity';
+import { UserStatusEnum } from 'src/core/common/enums/user-status.enum';
 
 export interface UserProps {
   email: string;

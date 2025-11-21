@@ -1,6 +1,6 @@
-import { SignInInputType, SignUpInputType, SignUpOutputType, SignInOutputType } from '@application/types/user-use-case.type';
-import { TokenEntity } from '@domain/entities/token.entity';
-import { UserEntity } from '@domain/entities/user.entity';
+import { SignInInputType, SignUpInputType, SignUpOutputType, SignInOutputType } from '@/core/common/types/user-use-case.type';
+import { TokenEntity } from '@core/domain/entities/token.entity';
+import { UserEntity } from '@core/domain/entities/user.entity';
 
 export const USER_OUT_PORT = Symbol('USER_OUT_PORT');
 export const USER_IN_PORT = Symbol('USER_IN_PORT');

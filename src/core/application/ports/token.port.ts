@@ -1,4 +1,4 @@
-import { TokenEntity } from "@domain/entities/token.entity";
+import { TokenEntity } from "@core/domain/entities/token.entity";
 
 export const TOKEN_OUT_PORT = Symbol('TOKEN_OUT_PORT');
 export const TOKEN_IN_PORT = Symbol('TOKEN_IN_PORT');

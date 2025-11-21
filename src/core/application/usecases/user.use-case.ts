@@ -1,19 +1,19 @@
-import { ProfileEntity } from '@domain/entities/profile.entity';
-import { UserEntity } from '@domain/entities/user.entity';
+import { ProfileEntity } from '@core/domain/entities/profile.entity';
+import { UserEntity } from '@core/domain/entities/user.entity';
 import { Inject, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
-import { TokenHelper } from '@application/helper/token.helper';
-import { TokenTypeEnum } from '@domain/enums/token-type.enum';
-import { PROFILE_OUT_PORT, type ProfileOutPort } from '@application/ports/profile.port';
-import { PASSWORD_HASHER_PORT, type PasswordHasherPort } from '@application/ports/password-hasher.port';
-import { USER_OUT_PORT, type UserOutPort, type UserInPort } from '@application/ports/user.port';
-import { JWT_SERVICE_PORT, type JwtServicePort } from '@application/ports/jwt-service.port';
-import { TOKEN_OUT_PORT, type TokenOutPort } from '@application/ports/token.port';
+import { TokenHelper } from '@core/application/helper/token.helper';
+import { TokenTypeEnum } from 'src/core/common/enums/token-type.enum';
+import { PROFILE_OUT_PORT, type ProfileOutPort } from '@core/application/ports/profile.port';
+import { PASSWORD_HASHER_PORT, type PasswordHasherPort } from '@core/application/ports/password-hasher.port';
+import { USER_OUT_PORT, type UserOutPort, type UserInPort } from '@core/application/ports/user.port';
+import { JWT_SERVICE_PORT, type JwtServicePort } from '@core/application/ports/jwt-service.port';
+import { TOKEN_OUT_PORT, type TokenOutPort } from '@core/application/ports/token.port';
 import {
   SignInInputType,
   SignInOutputType,
   SignUpInputType,
   SignUpOutputType,
-} from '@application/types/user-use-case.type';
+} from '@core/common/types/user-use-case.type';
 
 @Injectable()
 export class UserUseCase implements UserInPort {

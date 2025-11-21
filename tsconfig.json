@@ -14,12 +14,18 @@
     "sourceMap": true,
     "outDir": "./dist",
     "paths": {
-      "@domain/*": ["src/core/domain/*"],
-      "@application/*": ["src/core/application/*"],
-      "@helper/*": ["src/core/helper/*"],
-      "@infrastructure/*": ["src/infrastructure/*"],
-      "@presentation/*": ["src/presentation/*"],
-      "@common/*": ["src/common/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "@core/*": [
+        "src/core/*"
+      ],
+      "@adapters/*": [
+        "src/adapters/*"
+      ],
+      "@infrastructure/*": [
+        "src/infrastructure/*"
+      ]
     },
     "baseUrl": "./",
     "incremental": true,

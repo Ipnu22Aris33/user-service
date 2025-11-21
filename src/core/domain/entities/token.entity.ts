@@ -1,5 +1,5 @@
-import { BaseEntity, WithBaseProps } from '@helper/base/base.entity';
-import { TokenTypeEnum } from '@domain/enums/token-type.enum';
+import { BaseEntity, WithBaseProps } from 'src/core/common/base/base.entity';
+import { TokenTypeEnum } from 'src/core/common/enums/token-type.enum';
 
 export interface TokenProps {
   userUid: string;

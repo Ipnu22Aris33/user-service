@@ -1,4 +1,4 @@
-import { BaseEntity, BaseEntityProps } from '@helper/base/base.entity';
+import { BaseEntity, BaseEntityProps } from 'src/core/common/base/base.entity';
 
 export interface WishlistProps {
   userUid: string;
